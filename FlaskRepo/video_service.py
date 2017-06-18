@@ -26,3 +26,6 @@ def serve_video(video_id):
     filename = 'static/video/李志&quot;看见&quot;2015巡演预告片.mp4'
     fullpath = os.path.join(os.path.curdir, filename)
     return send_file(fullpath, mimetype='video/mp4')
+
+
+
