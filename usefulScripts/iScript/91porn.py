@@ -9,7 +9,7 @@ import re
 import argparse
 import random
 import select
-import urllib2
+import urllib.request
 
 ############################################################
 # wget exit status
