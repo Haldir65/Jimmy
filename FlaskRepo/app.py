@@ -12,7 +12,6 @@ from flask import url_for
 from flask import redirect
 from flask import render_template
 
-
 from video_service import serve_video
 
 import os
@@ -100,8 +99,11 @@ def get_single_product():
 def get_image():
     filename = 'static/image/b1.jpg'
     fullpath = os.path.join(os.path.curdir, filename)
-    print(filename, fullpath)
-    return send_file(fullpath, mimetype='image/jpeg')
+    if os.path.exists(fullpath):
+        print(' it exists')
+    if os.path.exists(filename):
+        print('filename exists')
+    return send_file(filename, mimetype='image/jpeg')
 
 
 @app.route('/_get_user/<user_id>', methods=['GET'])
@@ -143,13 +145,13 @@ def query_user_profile():
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('404.html',error=error),404
+    return render_template('404.html', error=error), 404
 
 
 @app.route('/_get_video/<_video_id>', methods=['GET'])
 def get_video(_video_id):
     print(_video_id)
-    filename = 'static/video/porn.MP4'
+    filename = 'static/video/Keynote%3A An Android Retrospective (en) - Romain Guy, Chet Haase, Google.MP4'
     return send_file(filename, mimetype='video/mp4')
 
 
@@ -157,7 +159,5 @@ def file_downloads():
     return
 
 
-
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10899, debug=True)
+    app.run(host='0.0.0.0', port=10846, debug=True,threaded =True)
