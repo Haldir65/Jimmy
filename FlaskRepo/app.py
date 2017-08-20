@@ -12,14 +12,18 @@ from flask import url_for
 from flask import abort
 from flask import redirect
 from flask import render_template
-
-from video_service import serve_video
-from web_utils import getCurrentTimeStr
+from flask import make_response
+from flask_httpauth import HTTPBasicAuth
 
 import os
 
 # create the flask object
+from FlaskRepo.web_utils import getCurrentTimeStr
+from FlaskRepo.video_service import serve_video
+
 app = Flask(__name__)
+
+auth = HTTPBasicAuth()
 
 
 #
@@ -163,6 +167,7 @@ tasks = [
         'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
         'done': False,
         'time': 0
+
     },
     {
         'id': 2,
@@ -170,14 +175,8 @@ tasks = [
         'description': u'Need to find a good Python tutorial on the web',
         'done': False,
         'time': 0
-
     }
 ]
-
-
-@app.route('/todo/api/v1.0/tasks', methods=['GET'])
-def getTasks():
-    return jsonify({'tasks': tasks})
 
 
 # @app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['GET'])
@@ -200,6 +199,15 @@ def get_task(task_id):
     # return jsonify({'task': task[0]})
 
 
+@app.route('/todo/api/v1.0/tasks', methods=['GET'])
+# @auth.login_required
+def get_tasks():
+    list = []
+    for i in tasks:
+        list.append(make_public_task(i))
+    return jsonify({'tasks': list})
+
+
 @app.route('/todo/api/v1.0/tasks', methods=['POST'])
 def create_task():
     if not request.json or 'title' not in request.json['task']:
@@ -217,9 +225,36 @@ def create_task():
     return jsonify({'task': task}), 201
 
 
+def make_public_task(task):
+    new_task = {}
+    print('make_url')
+    for field in task:
+        if field == 'id':
+            new_task['url'] = url_for('get_task', task_id=task['id'], _external=True)
+        else:
+            new_task[field] = task[field]
+            print(field)
+    if len(new_task) == 0:
+        abort(404)
+    else:
+        return new_task
+
+
+@auth.get_password
+def get_password(user_name):
+    if user_name == 'mike':
+        return 'python_guy'
+    return None
+
+
+@auth.error_handler
+def unauthorized():
+    return make_response(jsonify({'error': 'Not Found'}), 404)
+
+
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('404.html', error=error), 404
+    return render_template('not_found.html', error=error, width=900, height=1050), 404
 
 
 if __name__ == '__main__':
