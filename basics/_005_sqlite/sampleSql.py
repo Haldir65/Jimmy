@@ -11,7 +11,6 @@ import time
 import datetime
 import random
 
-
 # https://pythonprogramming.net/sqlite-part-2-dynamically-inserting-database-timestamps/?completed=/sql-database-python-part-1-inserting-database/
 
 
@@ -41,10 +40,39 @@ def dynamic_data_entry():
     print('executing one operation')
 
 
+def read_from_db():
+    c.execute('SELECT * FROM stuffToPlot')
+    data = c.fetchall()
+    print(data)  ## list
+    for row in data:
+        print(row)
+
+
+def read_certain_data_from_db():
+    # unix = str(time.time() - 10000)
+    # c.execute('SELECT * FROM stuffToPlot WHERE unix > ' + unix + '')
+    # unix = str(time.time() - 10000)
+    c.execute('SELECT * FROM stuffToPlot WHERE value > 4 ')
+    data = c.fetchall()
+    [print(row) for row in data] # for 循环还可以这么写
+    # for row in data:
+    #     print(row)
+
+
+def update_certain_value_in_table():
+    c.execute('UPDATE stuffToPlot SET value=13 WHERE value = 4 ')
+    conn.commit()
+    pass
+
 if __name__ == '__main__':
     create_table()
-    for i in range(10):
-        dynamic_data_entry()
-        time.sleep(1)  # 休眠一秒
+    # for i in range(10):
+    #     dynamic_data_entry()
+    #     time.sleep(1)  # 休眠一秒
+    print('before execution')
+    read_certain_data_from_db()
+    update_certain_value_in_table()
+    print('after execution')
+    read_certain_data_from_db()
     c.close()
     conn.close()
