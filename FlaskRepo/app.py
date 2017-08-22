@@ -14,6 +14,7 @@ from flask import redirect
 from flask import render_template
 from flask import make_response
 from flask_httpauth import HTTPBasicAuth
+# pip install Flask-HTTPAuth
 
 import os
 
@@ -75,6 +76,9 @@ def get_current_user():
         age=18
     )
 
+
+def redirect_to_url(url):
+    return redirect('https://www.baidu.com') #  note ! 302 status code
 
 @app.route('/_get_user_list', methods=['GET'])
 def get_user_list():
