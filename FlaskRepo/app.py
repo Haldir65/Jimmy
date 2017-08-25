@@ -13,18 +13,18 @@ from flask import abort
 from flask import redirect
 from flask import render_template
 from flask import make_response
-from flask_httpauth import HTTPBasicAuth
+# from flask_httpauth import HTTPBasicAuth
 # pip install Flask-HTTPAuth
 
 import os
 
 # create the flask object
-from FlaskRepo.web_utils import getCurrentTimeStr
-from FlaskRepo.video_service import serve_video
+# from FlaskRepo.web_utils import getCurrentTimeStr
+# from FlaskRepo.video_service import serve_video
 
 app = Flask(__name__)
 
-auth = HTTPBasicAuth()
+# auth = HTTPBasicAuth()
 
 
 #
@@ -221,7 +221,7 @@ def create_task():
         'title': request.json['task']['title'],
         'description': request.json['task'].get('description', ''),
         'done': False,
-        'time': getCurrentTimeStr()
+        'time': 's'
     }
     tasks.append(task)
     for i in tasks:
@@ -244,14 +244,14 @@ def make_public_task(task):
         return new_task
 
 
-@auth.get_password
+# @auth.get_password
 def get_password(user_name):
     if user_name == 'mike':
         return 'python_guy'
     return None
 
 
-@auth.error_handler
+# @auth.error_handler
 def unauthorized():
     return make_response(jsonify({'error': 'Not Found'}), 404)
 
@@ -262,4 +262,4 @@ def not_found(error):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10846, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=10846, debug=True, threaded=True,process=3)

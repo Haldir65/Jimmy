@@ -103,4 +103,5 @@ def get_occupied_space_on_disk():
 # remove_index_from_dict(indexs, 'sample3.json')
 # copyfile('samples.json','sample3.json')
 
-main()
+# main()
+get_occupied_space_on_disk()

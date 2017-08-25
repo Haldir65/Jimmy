@@ -73,6 +73,9 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
+
+.idea
+
 # pyenv
 .python-version
 
@@ -106,3 +109,4 @@ ENV/
 .idea/misc.xml
 .idea/modules.xml
 .idea/workspace.xml
+.idea/deployment.xml
