@@ -15,6 +15,8 @@
 ##Sets（集合）
 ##Dictionary（字典）
 
+from collections import Iterable
+
 
 def create_list():
     return ['Charley', 23, 'Bob']
@@ -66,32 +68,35 @@ def funcs_defination(a, b=10):  # we can have default params
 #     iterate_item_in_collection(students)
 
 def list_inside_a_list():
-    l1 = ['bob',True,'josh',u'zhi']
-    l2 = ['rom',l1,'ins']
+    l1 = ['bob', True, 'josh', u'zhi']
+    l2 = ['rom', l1, 'ins']
     iterate_item_in_collection(l1)
     print('\n')
     iterate_item_in_collection(l2)
     print('\n')
-    l2[1][1] = False ## grab list item inside a list
+    l2[1][1] = False  ## grab list item inside a list
     iterate_item_in_collection(l2)
+
 
 # list_inside_a_list()
 
 
 def tuple_for_demo():
-    tuple = ('json','dsjk',True)
+    tuple = ('json', 'dsjk', True)
     iterate_item_in_collection(tuple)
+
 
 # tuple_for_demo()
 
 def dict_for_demo():
-    d = {'name':'Alice','Age':49} # dict 无须，类似HashMap,key must be immutable （not a list or container）
-    print(d['name'],'\n')
+    d = {'name': 'Alice', 'Age': 49}  # dict 无须，类似HashMap,key must be immutable （not a list or container）
+    print(d['name'], '\n')
     print(d['Age'])
     print('steve' in d)
     d['raven'] = True
     d.pop('name')
     print(d)
+
 
 # dict_for_demo()
 
@@ -101,23 +106,45 @@ def set_for_demo():
     for item in s:
         print(item)
 
+
 # set_for_demo()
 
 # str . replace create a new str and return , str are immutable
 
-def pow(num , x =2): # 默认参数
-    print(num**x)
+def pow(num, x=2):  # 默认参数
+    print(num ** x)
 
 
 # pow(2,2)
 
-def func_parms(name,age,id = 10,price =100):
-    print(name,age,id,price)
+def func_parms(name, age, id=10, price=100):
+    print(name, age, id, price)
 
-def make_none(L = None):
+
+def make_none(L=None):
     if L is None:
         L = []
     L.append('EOF')
     return L
 
-func_parms('harris',12,price=20) # we can simply don't respect the order params are passed in , 默认参数创建后就是immutable的了
+
+# func_parms('harris',12,price=20) # we can simply don't respect the order params are passed in , 默认参数创建后就是immutable的了
+
+def isIterable(*args):
+    for index, item in enumerate(args):
+        if isinstance(item, Iterable):
+            print(item, 'is  Iterable')
+        else:
+            print(item, 'is Not Iterable')
+
+
+def iteratingDict(d):
+    for key, value in d.items():
+        print('%s key has the value %s' % (key, value))
+
+
+tu = ('string', 123, [1, 2, 3], (12, 32))  # tuple装各种元素
+dic = {'name': 123, 'age': 456}  # dic迭代不会取value,直接取
+# isIterable(*dic)
+
+iteratingDict(dic)
