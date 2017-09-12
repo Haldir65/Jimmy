@@ -24,6 +24,7 @@ import os
 
 app = Flask(__name__)
 
+
 # auth = HTTPBasicAuth()
 
 
@@ -77,13 +78,39 @@ def get_current_user():
     )
 
 
+@app.route("/posts", methods=['GET'])
+def get_post_list(count=10):
+    post = {'id': 1, 'title': 'Dummy title',
+            'body': '昨天小米发布了小米MIX 2和小米Note 3，的确被惊艳到了，所以我决定今晚等iPhone X（据说这是下一代iPhone刚确认的名称）发布。'}
+    post_lists = [post, post]
+    for x in range(0, count):
+        if (x % 2) == 0:
+            new_post = create_post(x,'dummy even title','饿了么刚刚如愿将百度外卖收入囊中，旋即遭遇不小的整合阻力。9月11日，北京商报记者获悉百度外卖CTO（首席技术官）耿艳坤已于9月8日离职，并且业内盛传耿艳坤的新东家正是百度外卖在牵手饿了么之前的“绯闻对象”——顺丰。事实上，不少业内分析人士都曾指出，两家平台在整合的过程中难以避免出现大范围的人事变动，'
+                                                        '但是对于技术见长的百度外卖而言，此次技术一把手的离开，恐在一定程度上削弱其竞争优势，这对于饿了么而言更是不小的损失。')
+        else:
+            new_post = create_post(x,'some odd title','近日，澳大利亚的一则羊肉电视广告遭到了该国印度教群体的强烈抗议。该广告发布于9月4日，使用了多个宗教神祗形象以表达羊肉是可以被所有宗教信仰的人所食用的观念。里边出现的象头神迦尼萨激发了印度教徒不满，原因是在该宗教文化描述中，象头神从来不吃肉。BBC报道，澳洲印度教团体已向政府提出外交抗议，要求撤下该广告，并为伤害了他们的感情和嘲笑印度文化而道歉。据悉，这则广告已遭到30多起涉及“宗教信仰”的投诉')
+        post_lists.append(new_post)
+    resp = Response(json.dumps(post_lists), mimetype='application/json')
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers['mimetype'] = 'application/json'
+    return resp
+
+
+def create_post(id= -1,title = 'unknwn',body='stuff'):
+    return {'id':id,'title':title,'body':body,'extra':'some extra stuff'}
+
+
 def redirect_to_url(url):
-    return redirect('https://www.baidu.com') #  note ! 302 status code
+    return redirect('https://www.baidu.com')  # note ! 302 status code
+
 
 @app.route('/_get_user_list', methods=['GET'])
 def get_user_list():
     user_list = create_user_list()
-    return Response(json.dumps(user_list), mimetype='application/json')
+    resp = Response(json.dumps(user_list))
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers['mimetype'] = 'application/json'
+    return resp
 
 
 def create_user_list():
@@ -262,4 +289,4 @@ def not_found(error):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10846, debug=True, threaded=True,process=3)
+    app.run(host='0.0.0.0', port=10877, debug=True, threaded=True)
