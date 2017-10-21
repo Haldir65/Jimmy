@@ -2,11 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My custom image</title>
+    <title>Gallery</title>
+     <link rel="stylesheet" type="text/css" href="/css/common.css">
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js">
+    </script>
 </head>
 <body>
-<p>opps , beauty</p>
-<img src="{{src}}" alt="beauty" width="{{width}}" height="{{height}}">
+<p>Click the button to navigate </p>
+<div class="img_container">
+    <div>
+<button class="normal_button" id="prev">Prev</button>
+<button class="normal_button" id="next">Next</button>
+</div>
+    <img src="{{src}}" id="main_img" alt="beauty" width="{{width}}" height="{{height}}" >
+
+</div>
 {% if name %}
 <h1>Hello {{ name }}!</h1>
 {% else %}
@@ -14,4 +24,22 @@
 {% endif %}
 
 
+
+
+<script type="application/javascript" src="http://127.0.0.1:10089/js/common.js"></script>
+
+
 </body>
+
+<style>
+    .normal_button {
+        margin-left: 100px;
+        margin-top: 0px;
+        margin-bottom: 10px;
+        background-color: #2784de;
+    }
+
+</style>
+
+
+

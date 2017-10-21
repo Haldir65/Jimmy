@@ -46,8 +46,26 @@ def render_image_template_by_index(index):
     file_src = os.path.join(os.path.curdir, relative_path)
     file_src = os.path.abspath(file_src)
     width, height = calculate_width_and_height(file_src)
-    return render_template('image_template.html', width=width, height=height, src=relative_path), 200
+    return render_template('image_template.html', width=width, height=height, src=relative_path,name='guest from Python'), 200
 
+@app.route('/css/common.css',methods=['GET'])
+def get_common_css_resource():
+    css_file_src = os.path.join(os.path.curdir,'static/css/common.css')
+    return send_file(css_file_src,mimetype='text/css')
+
+@app.route('/img/<int:index>', methods=['GET'])
+def get_img_by_index_svc(index):
+    relative_path = 'static/image/' + create_file_name_from_index(index)
+    file_src = os.path.join(os.path.curdir, relative_path)
+    file_src = os.path.abspath(file_src)
+    return send_file(file_src,mimetype='image/jpeg')
+
+
+@app.route('/js/<js_name>', methods=['GET'])
+def get_js_file(js_name):
+    file_src = os.path.join(os.path.curdir, 'static/js/' + js_name)
+    print(file_src)
+    return send_file(file_src, mimetype='text/javascript')
 
 @app.errorhandler(404)
 def not_found(error):
