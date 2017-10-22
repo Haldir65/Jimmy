@@ -67,6 +67,11 @@ def get_js_file(js_name):
     print(file_src)
     return send_file(file_src, mimetype='text/javascript')
 
+@app.route('/json/simple',methods=['GET'])
+def get_simple_json():
+    data = [1, 'foo']
+    return json.dumps(data)
+
 @app.errorhandler(404)
 def not_found(error):
     return render_template('not_found.html', error=error, width=900, height=1050), 404
