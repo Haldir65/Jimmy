@@ -13,7 +13,7 @@ from flask import abort
 from flask import redirect
 from flask import render_template
 from flask import make_response
-from flask_httpauth import HTTPBasicAuth
+# from flask_httpauth import HTTPBasicAuth
 from FlaskRepo.image_utils import calculate_width_and_height
 from FlaskRepo.image_utils import create_file_name_from_index
 import os
@@ -46,7 +46,7 @@ def render_image_template_by_index(index):
     file_src = os.path.join(os.path.curdir, relative_path)
     file_src = os.path.abspath(file_src)
     width, height = calculate_width_and_height(file_src)
-    return render_template('image_template.html', width=width, height=height, src=relative_path,name='guest from Python'), 200
+    return render_template('image_template.html', width=width, height=height, src=relative_path,name='guest from Hell'), 200
 
 @app.route('/css/common.css',methods=['GET'])
 def get_common_css_resource():

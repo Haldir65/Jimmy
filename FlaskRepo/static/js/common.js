@@ -1,48 +1,95 @@
+// import {colorfulog,logCurrentTime} from './util'
 
-window.onload = function () {
-logCurrentTime()
-console.log('now the frame is loaded')
-}
+const portnum = 10089
+let host = "http://127.0.0.1"
+const colon = ":"
+
+
+let currentIndex = 0
+
+let autoScrollId = -1
+
+
+let jq = jQuery.noConflict()
 
 function logCurrentTime() {
-var time =  new Date().getTime()
-console.log(time)
+    let time = new Date().getTime()
+    console.log(time)
 }
 
-let jq=jQuery.noConflict()
+window.onload = function () {
+    logCurrentTime()
+}
 
-let canlog = true// switch for log
+window.onunload = function () {
+    console.log('window unload')
+}
 
-var currentIndex = 0
 
-jq(document).ready(function(){
-addlistener()
-
+jq(document).ready(function () {
+    addlistener()
 });
 
 function addlistener() {
-jq('#next').click(function () {
-currentIndex = currentIndex+1;
-if(currentIndex>=50){
-currentIndex=1
-}
-let image_src= "http://127.0.0.1:10089/img/"+currentIndex;
-jq('#main_img').attr('src',image_src).width('auto').height('auto')
+    jq('#next').click(function () {
+        console.log('next')
+        nextImage()
+    })
 
-})
+    jq('#prev').click(function () {
+        console.log('prev')
+        prevImage()
+    })
 
-jq('#prev').click(function () {
-currentIndex=currentIndex-1;
-if(currentIndex<=0){
-currentIndex=50
-}
-let image_src= "http://127.0.0.1:10089/img/"+currentIndex;
-jq('#main_img').attr('src',image_src).width('auto').height('auto')
-})
+    jq('#autoScroll').click(function () {
+        autoScroll()
+    })
+
+    jq('#cancelScroll').click(function () {
+            cancelAutoScroll()
+    })
+
+
+
+
+
+
+
+    function nextImage() {
+        currentIndex = currentIndex + 1;
+        if (currentIndex >= 27) {
+            currentIndex = 1
+        }
+        let image_src = host + colon+portnum + "/img/" + currentIndex;
+        jq('#main_img').attr('src', image_src).width('300px').height('auto')
+
+    }
+
+    function prevImage() {
+        currentIndex = currentIndex - 1;
+        if (currentIndex <= 0) {
+            currentIndex = 50
+        }
+        let image_src = host +colon+ portnum + "/img/" + currentIndex;
+        jq('#main_img').attr('src', image_src).width('auto').height('auto')
+    }
+
+    function autoScroll() {
+        autoScrollId = setInterval(function () {
+            console.log("currentTime is" + new Date().getMilliseconds())
+            nextImage()
+        }, 500)
+    }
+
+    function cancelAutoScroll() {
+        console.log(autoScrollId)
+        if (autoScrollId >0) {
+            clearInterval(autoScrollId)
+            console.log('cancel auto scroll')
+        }
+    }
+
+
 }
 
-function colorfulog(msg) {
-if (canlog) {
-console.log("%c "+msg,"background-image:-webkit-gradient( linear, left top,right top, color-stop(0, #00a419),color-stop(0.15, #f44336), color-stop(0.29, #ff4300),color-stop(0.3, #AA00FF),color-stop(0.4, #8BC34A), color-stop(0.45, #607D8B),color-stop(0.6, #4096EE), color-stop(0.75, #D50000),color-stop(0.9, #4096EE), color-stop(1, #FF1A00));color:transparent;-webkit-background-clip:text;font-size:13px;");
-}
-}
+

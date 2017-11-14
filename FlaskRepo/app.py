@@ -91,7 +91,7 @@ def get_post_list(count=10):
             new_post = create_post(x,'some odd title','近日，澳大利亚的一则羊肉电视广告遭到了该国印度教群体的强烈抗议。该广告发布于9月4日，使用了多个宗教神祗形象以表达羊肉是可以被所有宗教信仰的人所食用的观念。里边出现的象头神迦尼萨激发了印度教徒不满，原因是在该宗教文化描述中，象头神从来不吃肉。BBC报道，澳洲印度教团体已向政府提出外交抗议，要求撤下该广告，并为伤害了他们的感情和嘲笑印度文化而道歉。据悉，这则广告已遭到30多起涉及“宗教信仰”的投诉')
         post_lists.append(new_post)
     resp = Response(json.dumps(post_lists), mimetype='application/json')
-    resp.headers['Access-Control-Allow-Origin'] = '*'
+    resp.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080'
     resp.headers['mimetype'] = 'application/json'
     return resp
 
