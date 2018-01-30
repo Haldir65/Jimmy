@@ -76,7 +76,7 @@ def get_remote_response(url):
                    'Cache-Control':'max-age=0'}
         r = requests.get(url,headers=headers)
         remote_content = r.content.decode('utf-8','ignore')
-        with open('result.json','w+') as f:
+        with open('result.json','w+',encoding='utf8') as f:
             f.write(remote_content)
         if remote_content == '':
             print('Nay')
