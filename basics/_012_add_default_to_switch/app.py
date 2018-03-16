@@ -26,7 +26,7 @@ def modify_file(abs_path):
         switch_braces = 0
         for_braces = 0
         for_began = False
-        flag = False # a hint that we may begin
+        flag = False  # a hint that we may begin
         for line in file_content:
             # if line.strip().__contains__('break') or line.strip().__eq__('case'):
             striped_content = line.strip()
@@ -47,9 +47,9 @@ def modify_file(abs_path):
                     switch_braces = 0
                 if switch_began:
                     if striped_content.__contains__('{'):
-                        switch_braces = switch_braces + 1
-                    elif striped_content.__contains__('}'):
-                        switch_braces = switch_braces - 1
+                        switch_braces = switch_braces + striped_content.count('{')
+                    if striped_content.__contains__('}'):
+                        switch_braces = switch_braces - striped_content.count('}')
                 if striped_content == 'default:':
                     switch_began = False  # we observed default now, just skip this switch block
                     # we need to know how many spaces are needed
@@ -65,6 +65,8 @@ def modify_file(abs_path):
                     print('File modified!!! ')
                 if line.strip() == 'break;':
                     flag = True
+                elif striped_content == '':
+                    pass
                 else:
                     flag = False
             index = index + 1
@@ -73,21 +75,6 @@ def modify_file(abs_path):
                 # if line.__contains__('default'):
                 f2.write(line)
     print('all done')
-
-
-def listAllSrcFile(rootpath, resultlist):
-    if os.path.exists(rootpath) and os.path.isdir(rootpath):
-        os.chdir(rootpath)
-        filenames = os.listdir(rootpath)
-        for fileordir in filenames:
-            fileordir = os.path.join(os.path.abspath(os.curdir), fileordir)
-            if os.path.exists(fileordir):
-                if os.path.isdir(fileordir):
-                    listAllSrcFile(fileordir, resultlist)
-                else:
-                    if os.path.isfile(fileordir) and fileordir.endswith('.java'):
-                        resultlist.append(fileordir)
-    return resultlist
 
 
 def listfiles(rootpath):
@@ -105,13 +92,15 @@ def listfiles(rootpath):
             f.write(name + '\n')
             # if name.endswith('CourseDetailActivity.java'):
             #     modify_file(name)
-                # print('index ' + str(index) + 'Filename = ' + name)
+            # print('index ' + str(index) + 'Filename = ' + name)
+            # if name.endswith('AbsWalletDetailFragment.java'):
+            #      modify_file(name)
             modify_file(name)
 
 
-
 if __name__ == '__main__':
-    listfiles("D:\MyApplication\/app\src\main\java") ## find bugs say java file switch case have no default ,this script will fix it
+    listfiles(
+        "D:\Application\/app\src\main\java")  ## find bugs say java file switch case have no default ,this script will fix it
     # print(insertChar + '}')
     # openfile()
     # for index, javaFileName in enumerate(result):
