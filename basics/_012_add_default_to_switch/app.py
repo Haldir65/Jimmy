@@ -69,6 +69,35 @@ def modify_file(abs_path):
                     pass
                 else:
                     flag = False
+            else:
+                # a switch case in if
+                print('an switch inside a for ?')
+                if for_braces > 0:
+                    if striped_content.__contains__('switch'):
+                        switch_began = True
+                        switch_braces = 0
+                    if striped_content.__contains__('{'):
+                        switch_braces += striped_content.count('{')
+                    if striped_content.__contains__('}'):
+                        switch_braces -= striped_content.count('}')
+                    if striped_content == 'default:':
+                        switch_began = False  # we observed default now, just skip this switch block
+                        # we need to know how many spaces are needed
+                    if striped_content.startswith('case'):
+                        forward_spacing = line[0:line.index('case')]
+                    if flag and switch_began and striped_content.__contains__('}') and switch_braces == 0:
+                        line = line.replace(line,
+                                            forward_spacing + insertChar + forward_spacing + insertBreak + "\n" + line)
+                        file_content[index] = line
+                        switch_began = False
+                        forward_spacing = ''
+                        print('File modified!!! ')
+                    if line.strip() == 'break;':
+                        flag = True
+                    elif striped_content == '':
+                        pass
+                    else:
+                        flag = False
             index = index + 1
         with open(abs_path, 'w+', encoding='utf-8') as f2:
             for line in file_content:
@@ -90,17 +119,15 @@ def listfiles(rootpath):
             if not os.path.exists(name):
                 raise EOFError
             f.write(name + '\n')
-            # if name.endswith('CourseDetailActivity.java'):
             #     modify_file(name)
             # print('index ' + str(index) + 'Filename = ' + name)
-            # if name.endswith('AbsWalletDetailFragment.java'):
-            #      modify_file(name)
+            #     modify_file(name)
             modify_file(name)
 
 
 if __name__ == '__main__':
     listfiles(
-        "D:\Application\/app\src\main\java")  ## find bugs say java file switch case have no default ,this script will fix it
+        "D:\workSpace\Assistant/app\src\main\java")  ## find bugs say java file switch case have no default ,this script will fix it
     # print(insertChar + '}')
     # openfile()
     # for index, javaFileName in enumerate(result):
