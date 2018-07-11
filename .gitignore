@@ -111,3 +111,5 @@ env/
 .idea/modules.xml
 .idea/workspace.xml
 .idea/deployment.xml
+
+*.DS_Store

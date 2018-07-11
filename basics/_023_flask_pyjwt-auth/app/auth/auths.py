@@ -5,6 +5,9 @@ from .. import config
 from .. import common
 
 class Auth():
+
+    expire_time = datetime.datetime.utcnow()
+
     @staticmethod
     def encode_auth_token(user_id, login_time):
         """
@@ -15,7 +18,7 @@ class Auth():
         """
         try:
             payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=10),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=30),
                 'iat': datetime.datetime.utcnow(),
                 'iss': 'ken',
                 'data': {
@@ -23,13 +26,14 @@ class Auth():
                     'login_time': login_time
                 }
             }
+            Auth.expire_time = datetime.datetime.utcnow()
             return jwt.encode(
                 payload,
                 config.SECRET_KEY,
                 algorithm='HS256'
-            )
+            ),Auth.expire_time
         except Exception as e:
-            return e
+            return e,None
 
     @staticmethod
     def decode_auth_token(auth_token):
@@ -39,9 +43,9 @@ class Auth():
         :return: integer|string
         """
         try:
-            # payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'), leeway=datetime.timedelta(seconds=10))
+            payload = jwt.decode(auth_token,config.SECRET_KEY, leeway=datetime.timedelta(seconds=10))
             # 取消过期时间验证
-            payload = jwt.decode(auth_token, config.SECRET_KEY, options={'verify_exp': False})
+            # payload = jwt.decode(auth_token, config.SECRET_KEY, options={'verify_exp': False})
             if ('data' in payload and 'id' in payload['data']):
                 return payload
             else:
@@ -66,8 +70,9 @@ class Auth():
                 login_time = int(time.time())
                 userInfo.login_time = login_time
                 Users.update(Users)
-                token = self.encode_auth_token(userInfo.id, login_time)
-                return jsonify(common.trueReturn(token.decode(), '登录成功'))
+                token ,expire_time = self.encode_auth_token(userInfo.id, login_time)
+                decoded_data = token.decode()
+                return jsonify(common.trueReturn({'tk':decoded_data,'过期时间':expire_time}, '登录成功'))
             else:
                 return jsonify(common.falseReturn('', '密码不正确'))
 
@@ -97,4 +102,4 @@ class Auth():
                     result = common.falseReturn('', payload)
         else:
             result = common.falseReturn('', '没有提供认证token')
-        return result
+        return result, Auth.expire_time
