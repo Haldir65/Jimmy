@@ -6,5 +6,4 @@ from sqlalchemy.ext.declarative import declarative_base
 import datetime
 
 
-
 mydb = SQLAlchemy()

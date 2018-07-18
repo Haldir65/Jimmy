@@ -6,8 +6,6 @@ sys.path.append(str(Path('.').absolute().parent))
 import config
 from _025_pratical_mysql_flask.db import mydb
 
-
-
 from sqlalchemy.orm import mapper
 from sqlalchemy import Table, MetaData, Column, Integer, String, ForeignKey
 
