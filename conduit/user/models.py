@@ -16,6 +16,9 @@ class User(SurrogatePK,Model):
     updated_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     bio = Column(db.String(300), nullable=True)
     image = Column(db.String(120), nullable=True)
+    
+
+    quotes = db.relationship('Quote',backref="author",lazy=True)
 
 
     def __init__(self,username,email,password=None,**kwargs):

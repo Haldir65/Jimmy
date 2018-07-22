@@ -4,7 +4,7 @@ from conduit.setting import Config
 
 ## 下面这两行换一下顺序就会变成循环import
 from conduit.extensions import db,bcrypt,jwt
-from conduit import user,profile,articles
+from conduit import user,profile,articles,qutotes
 
 def create_app(config_obj=Config):
     app = Flask(__name__)
@@ -17,7 +17,7 @@ def create_app(config_obj=Config):
 def register_blueprint(app):
     app.register_blueprint(user.views.blueprint)
     app.register_blueprint(profile.views.blueprint)
-
+    app.register_blueprint(qutotes.views.blueprint)
 
 
 def register_extensions(app):
