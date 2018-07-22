@@ -4,8 +4,12 @@ from flask import jsonify
 def template(data,code=500):
     return {'message':{'error':{'body':data}},'status_code':code}
 
+
+USER_NOT_FOUND = template(['User not found'], code=404)
+USER_ALREADY_REGISTERED = template(['User already registered'], code=422)
 UKNOWN_ERROR = template([], code=500)
 ARTICLE_NOT_FOUND = template(['Article not found'], code=404)
+COMMENT_NOT_OWNED = template(['Not your article'], code=422)
 
 
 class InvalidUsage(Exception):
@@ -25,13 +29,23 @@ class InvalidUsage(Exception):
         return jsonify(res)
 
     @classmethod
-    def unknown_error(cls):
-        return cls(**UKNOWN_ERROR)
+    def user_not_found(cls):
+        return cls(**USER_NOT_FOUND)
 
+    @classmethod
+    def user_already_registered(cls):
+        return cls(**USER_ALREADY_REGISTERED)
+
+    @classmethod
+    def uknown_error(cls):
+        return cls(**UKNOWN_ERROR)
 
     @classmethod
     def article_not_found(cls):
         return cls(**ARTICLE_NOT_FOUND)
 
+    @classmethod
+    def comment_not_owned(cls):
+        return cls(**COMMENT_NOT_OWNED)
 
 

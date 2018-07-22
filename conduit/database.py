@@ -21,9 +21,9 @@ class SurrogatePK():
             return cls.query.get((int)(record_id))
 
         
-    def reference_col(tablename,nullable=False,pk_name='id',**kwargs):
-        return Column(db.ForeignKey('{0}.{1}'.format(tablename,pk_name)),
-        nullable=nullable,**kwargs)
+def reference_col(tablename,nullable=False,pk_name='id',**kwargs):
+    return Column(db.ForeignKey('{0}.{1}'.format(tablename,pk_name)),
+    nullable=nullable,**kwargs)
 
 
 

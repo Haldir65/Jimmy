@@ -2,10 +2,14 @@ from flask import Blueprint,request,Response,jsonify
 from flask_jwt import current_identity,jwt_required
 from flask_jwt import current_identity,jwt_required
 
+
 from sqlalchemy.exc import IntegrityError
+
+import json
 
 from .models import User
 from .serializers import user_schema,user_schemas
+from conduit.profile.models import UserProfile
 
 from conduit.database import db
 from conduit.exceptions import InvalidUsage
@@ -25,12 +29,13 @@ def register_user():
         user = User(username=user_data.pop('username'),
         email=user_data.pop('email'),
         password=user_data.pop('password'),**user_data)
-        user.save()
+        user = user.save()
+        user_profile = UserProfile(user).save()
     except IndentationError:
         db.session.rollback()
         raise InvalidUsage.unknown_error
-    return user.username 
-    return Response("dumb ass",status=200)
+    result = user_schema.dump(user_profile.user).data
+    return Response(json.dumps(result),status=201)
 
 
 
@@ -60,7 +65,6 @@ def get_user():
     return jsonify(data),200
 
 
-    
 
 ## get user by id
 @blueprint.route('/api/user/<int:userId>', methods=('GET',))

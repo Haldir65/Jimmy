@@ -1,7 +1,7 @@
 from conduit.app import create_table,create_app
 
 def main():
-    # create_table()
+    # create_table() ## fro testing issue
     app = create_app()
     app.run()
 

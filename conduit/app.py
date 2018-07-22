@@ -16,6 +16,8 @@ def create_app(config_obj=Config):
 
 def register_blueprint(app):
     app.register_blueprint(user.views.blueprint)
+    app.register_blueprint(profile.views.blueprint)
+
 
 
 def register_extensions(app):
