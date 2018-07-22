@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine,MetaData,Table,Column
 import os,logging
 from io import BytesIO
+from extensions import save_file_to_disk
 
 app = Flask(__name__)
 
@@ -42,7 +43,9 @@ def index():
 def upload():
     create_table_if_non_exists()
     file = request.files['inputFile']
+    print(file)
     newFile = FileContents(name=file.filename,data=file.read())
+    save_file_to_disk(file.read(),file.filename)
     db.session.add(newFile)
     db.session.commit()
     logging.error('saving file with file name %s ' % (file.filename,))
