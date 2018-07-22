@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for,render_template
 from werkzeug import secure_filename
 
 
@@ -24,16 +24,7 @@ def index():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('index'))
-    return """
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    <p>%s</p>
-    """ % "<br>".join(os.listdir(app.config['UPLOAD_FOLDER'],))
+    return render_template('upload.html',files=os.listdir(app.config['UPLOAD_FOLDER'],))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)
