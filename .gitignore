@@ -113,3 +113,5 @@ env/
 .idea/deployment.xml
 
 *.DS_Store
+
+/basics/_033_flask_upload_files/static/
