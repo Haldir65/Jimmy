@@ -5,7 +5,7 @@
 import socket
 import re
 import os
-import codecs
+import codecs,logging
 
 
 HOST = ''
@@ -41,7 +41,7 @@ Content-Type: image/jpg
 '''
 # i guess the binary data are stored behind these Strings
 # Read picture, put into HTTP response data
-with open(os.path.join(os.getcwd(), 'image\\image_12.jpg'),"rb") as binary_file:
+with open(os.path.join(os.getcwd(), 'image\\sunrise_dim_grass.jpg'),"rb") as binary_file:
     pic_content += str(binary_file.read())
 
 
@@ -57,6 +57,11 @@ while True:
     request = conn.recv(1024)
     if isinstance(request,bytes):
         request = str(request)
+        logging.error(request)
+
+    splited = request.split(' ')    
+    if(len(splited)<2):
+        continue
     method = request.split(' ')[0]
     src = request.split(' ')[1]
 
@@ -95,8 +100,8 @@ while True:
 
     else:
         continue
-
+    if(type(content) is str):
+        content = content.encode('utf-8')
     conn.sendall(content)
-
     # close connection
     conn.close()
