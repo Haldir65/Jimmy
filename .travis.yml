@@ -1,0 +1,29 @@
+language: python
+python:
+  # - "2.6"
+  # - "2.7"
+  # - "3.3"
+  # - "3.4"
+  # - "3.5"
+  # - "3.5-dev"  # 3.5 development branch
+  - "3.6"
+branches:
+  only:
+  - rm
+
+  # blacklist
+branches:
+  except:
+  - dev
+  - master  
+
+# command to install dependencies
+# install:
+#   - pip install -r requirements.txt
+
+
+before_script:
+  - cd src/_040_threading_and_process
+# command to run tests
+script:
+  - python threading1.py
