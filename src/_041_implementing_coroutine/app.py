@@ -43,7 +43,12 @@ def get(path):
         s.connect(('localhost', PORT))
     except BlockingIOError:
         pass
-    request = 'GET %s HTTP/1.1\r\n\r\n' % path
+    request = 'GET {0} HTTP/1.1\r\n\
+    Host: www.zhihu.com\r\n\
+    Content-Type: text/html; charset=utf-8\r\n\
+    User-Agent: User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36\r\n\
+    DNT: 1\r\n\
+    \r\n\r\n'.format(path)
 
     f = Future()
     selector.register(s.fileno(), EVENT_WRITE, data=f)
