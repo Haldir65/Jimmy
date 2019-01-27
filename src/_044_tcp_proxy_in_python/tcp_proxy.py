@@ -96,7 +96,7 @@ def sock_proxy(sock_in, sock_out, forward):
             continue
         else:
             if forward:
-                log('reading data %s from local client ' % data)
+                log('re ading data %s from local client ' % data)
             else:
                 log('reading data %s from remote server ' % data)    
         try:
